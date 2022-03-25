@@ -23,13 +23,28 @@ data "archive_file" "lambda_zip" {
   output_path = "${path.module}/build/${var.object_name}.zip"
 }
 
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
+data "aws_iam_policy_document" "lambda_assume_role_policy_document" {
   statement {
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
+  }
+}
+
+data "aws_iam_policy_document" "cloudwatch_role_policy_document" {
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup"]
+    resources = [aws_cloudwatch_log_group.meetup_reminder_bot_log_group.arn]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:PutLogEvents"]
+    resources = ["${aws_cloudwatch_log_group.meetup_reminder_bot_log_group.arn}:*"]
   }
 }
 
@@ -66,14 +81,30 @@ resource "aws_lambda_function" "meetup_reminder_bot" {
   handler          = var.lambda_handler
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   role             = aws_iam_role.lambda_exec_role.arn
+
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_logging_to_cloudwatch,
+    aws_cloudwatch_log_group.lambda_log_group
+  ]
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
   name_prefix        = var.lambda_execution_role_prefix
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy_document.json
 }
 
-resource "aws_iam_role_policy_attachment" "basic_execution_policy" {
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
+  name              = "/aws/lambda/${var.lambda_name}"
+  retention_in_days = 14
+}
+
+resource "aws_iam_policy" "cloudwatch_policy" {
+  name        = "meetup-reminder-bot-cloudwatch-policy"
+  description = "Cloudwatch policy to allow ${aws_iam_role.lambda_exec_role.name} to access Cloudwatch"
+  policy      = data.aws_iam_policy_document.cloudwatch_role_policy_document.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_logging_to_cloudwatch" {
   role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = aws_iam_policy.cloudwatch_policy.arn
 }
