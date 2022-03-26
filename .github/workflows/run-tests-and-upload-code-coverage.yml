@@ -37,7 +37,7 @@ jobs:
       run: poetry install --no-interaction --no-root
     - name: Run unit tests and generate coverage report
       run: |
-        coverage run -m unittest
+        poetry run coverage run -m unittest
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v2
       with:
