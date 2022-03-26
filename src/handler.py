@@ -6,8 +6,6 @@ from aws_lambda_typing import context, events
 
 from src.lib.bot import MeetupReminderBot
 
-NEXT_WEEK = date.today() + timedelta(days=7)
-
 
 def is_reminder_hour(event_hour: str, event_tz: str) -> bool:
     """Checks if it is time to send the reminder yet.
@@ -48,7 +46,11 @@ def lambda_handler(event: events.EventBridgeEvent, context_: context.Context):
     ):
         return {"message": "Not reminder hour yet"}
 
+    event_date = date.today() + timedelta(
+        days=int(os.environ["MEETUP_EVENT_NUM_DAYS_LOOKAHEAD"])
+    )
+
     bot = MeetupReminderBot(os.environ["TG_BOT_TOKEN"], os.environ["TG_CHAT_ID"])
-    message = bot.send_reminder(os.environ["MEETUP_GROUP_NAME"], NEXT_WEEK)
+    message = bot.send_reminder(os.environ["MEETUP_GROUP_NAME"], event_date)
 
     return {"message": message.text}

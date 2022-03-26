@@ -3,8 +3,11 @@
 # Project specific
 #--------------------------------------------------------------
 
-project_name        = "meetup-reminder-bot"
-project_description = "Telegram bot to remind you to RSVP to your next Meetup session!"
+project_name                    = "meetup-reminder-bot"
+project_description             = "Telegram bot to remind you to RSVP to your next Meetup session!"
+meetup_event_hour_24h           = 19
+meetup_event_num_days_lookahead = 7
+meetup_event_tz                 = "Europe/London"
 
 #--------------------------------------------------------------
 # AWS General
@@ -17,16 +20,12 @@ aws_region  = "eu-west-2"
 # AWS Lambda
 #--------------------------------------------------------------
 
-lambda_execution_role_prefix = "terraform-lambda-execution-role-"
-lambda_handler               = "src.handler.lambda_handler"
-lambda_name                  = "MeetupReminderBot"
-lambda_runtime               = "python3.9"
-
-meetup_event_hour_24h = 19
-meetup_event_tz       = "Europe/London"
+lambda_handler = "src.handler.lambda_handler"
+lambda_name    = "MeetupReminderBot"
+lambda_runtime = "python3.9"
 
 #--------------------------------------------------------------
 # AWS EventBridge
 #--------------------------------------------------------------
 
-eventbridge_schedule_expression = "cron(0 18,19 ? * MON,THU *)"
+reminder_frequency = "cron(0 18,19 ? * MON,THU *)"

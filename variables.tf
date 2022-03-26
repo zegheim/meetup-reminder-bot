@@ -8,18 +8,9 @@ variable "aws_region" {
   type        = string
 }
 
-variable "eventbridge_schedule_expression" {
-  description = "Determines when the bot will send you reminder. See https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html for more information"
+variable "reminder_frequency" {
+  description = "Determines the frequency at which the bot will send you reminders. See https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html for more information"
   type        = string
-}
-
-variable "lambda_execution_role_prefix" {
-  description = "Prefix for the Lambda function's execution role"
-  type        = string
-  validation {
-    condition     = length(var.lambda_execution_role_prefix) >= 1 && length(var.lambda_execution_role_prefix) <= 38
-    error_message = "The prefix of the Lambda's execution role must be no more than 38 characters."
-  }
 }
 
 variable "lambda_handler" {
@@ -39,6 +30,11 @@ variable "lambda_runtime" {
 
 variable "meetup_event_hour_24h" {
   description = "Meetup event hour you would like to be notified for (24h format)"
+  type        = number
+}
+
+variable "meetup_event_num_days_lookahead" {
+  description = "Number of days you would like to be reminded for events in advance"
   type        = number
 }
 

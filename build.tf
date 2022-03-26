@@ -16,6 +16,7 @@ data "archive_file" "layers_zip" {
 resource "null_resource" "build_lambda" {
   triggers = {
     src_directory_md5 = md5(join("", [for file in fileset("${path.module}/src", "*") : filemd5("${path.module}/src/${file}")]))
+    build_script_md5  = filemd5("scripts/build_lambda.sh")
   }
 
   provisioner "local-exec" {
@@ -28,6 +29,7 @@ resource "null_resource" "build_lambda" {
 resource "null_resource" "build_layers" {
   triggers = {
     pyproject_toml_md5 = filemd5("pyproject.toml")
+    build_script_md5   = filemd5("scripts/build_layers.sh")
   }
 
   provisioner "local-exec" {
