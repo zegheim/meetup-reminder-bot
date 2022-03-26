@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "meetup-reminder-bot"
+version = "0.1.0"
+description = "Telegram bot to remind you to RSVP to your next Meetup session!"
+authors = ["Justin Arista Kasin <justin+github@aristakas.in>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-telegram-bot-raw = "^13.11"
+icalevents = "^0.1.25"
+aws-lambda-typing = "^2.10.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.1.0"
+pylint = "^2.12.2"
+mypy = "^0.941"
+types-pytz = "^2021.3.6"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

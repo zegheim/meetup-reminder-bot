@@ -1,0 +1,13 @@
+# Python 
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+
+# Terraform
+.terraform/
+build/
+terraform.tfstate*
+
+# VS Code
+.vscode/
