@@ -14,7 +14,14 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+    - name: Load cached Poetry installation
+      id: cached-poetry-installation
+      uses: actions/cache@v2
+      with:
+        path: ~/.local
+        key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/run-tests-and-upload-code-coverage.yml') }}
     - name: Install Poetry
+      if: steps.cached-poetry-installation.outputs.cache-hit != 'true'
       uses: snok/install-poetry@v1
       with:
         virtualenvs-create: true
