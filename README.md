@@ -1,5 +1,6 @@
 # meetup-reminder-bot
 [![codecov](https://codecov.io/gh/zegheim/meetup-reminder-bot/branch/master/graph/badge.svg?token=58J21L84XA)](https://codecov.io/gh/zegheim/meetup-reminder-bot) 
+
 Serverless Telegram bot to remind you to RSVP to your next Meetup session! Powered by [AWS Lambda](https://aws.amazon.com/lambda/) and [Amazon EventBridge](https://aws.amazon.com/eventbridge/).
 
 # Pre-requisites
