@@ -41,7 +41,6 @@ resource "aws_lambda_function" "meetup_reminder_bot" {
       MEETUP_EVENT_NUM_DAYS_LOOKAHEAD = var.meetup_event_num_days_lookahead
       MEETUP_EVENT_TZ                 = var.meetup_event_tz
       MEETUP_GROUP_NAME               = var.meetup_group_name
-
     }
   }
 }
