@@ -20,7 +20,6 @@ class TestHandler(TestCase):
         self.assertFalse(is_reminder_hour("20", "UTC"))
         self.assertTrue(is_reminder_hour("20", "Asia/Jakarta"))
 
-    @patch("src.handler.NEXT_WEEK", date(2022, 4, 2))
     @patch("src.handler.MeetupReminderBot", return_value=MagicMock())
     @patch.dict(
         os.environ,
@@ -29,6 +28,7 @@ class TestHandler(TestCase):
             "TG_CHAT_ID": "12345678",
             "MEETUP_GROUP_NAME": "FooBar",
             "MEETUP_EVENT_HOUR_24H": "14",
+            "MEETUP_EVENT_NUM_DAYS_LOOKAHEAD": "7",
             "MEETUP_EVENT_TZ": "Foo/Bar",
         },
     )

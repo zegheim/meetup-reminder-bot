@@ -33,6 +33,11 @@ variable "meetup_event_hour_24h" {
   type        = number
 }
 
+variable "meetup_event_num_days_lookahead" {
+  description = "Number of days you would like to be reminded for events in advance"
+  type        = number
+}
+
 variable "meetup_event_tz" {
   description = "Meetup event timezone"
   type        = string
