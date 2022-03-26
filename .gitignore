@@ -1,9 +1,12 @@
 # Python 
 __pycache__/
 *.py[cod]
-.coverage
 .mypy_cache/
 .pytest_cache/
+
+# Coverage
+.coverage
+coverage.xml
 
 # Poetry
 poetry.lock

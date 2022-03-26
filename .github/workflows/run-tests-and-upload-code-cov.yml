@@ -19,7 +19,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.local
-        key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/run-tests-and-upload-code-coverage.yml') }}
+        key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/run-tests-and-upload-code-cov.yml') }}
     - name: Install Poetry
       if: steps.cached-poetry-installation.outputs.cache-hit != 'true'
       uses: snok/install-poetry@v1
@@ -35,9 +35,9 @@ jobs:
     - name: Install dependencies if cached venv does not exist
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
-    - name: Run unit tests and generate coverage report
+    - name: Run unit tests and generate coverage report XML
       run: |
-        poetry run coverage run -m unittest
+        poetry run coverage run -m unittest && poetry run coverage xml
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v2
       with:
