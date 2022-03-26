@@ -10,6 +10,7 @@ python = "^3.9"
 python-telegram-bot-raw = "^13.11"
 icalevents = "^0.1.25"
 aws-lambda-typing = "^2.10.0"
+pytz = "^2022.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.1.0"

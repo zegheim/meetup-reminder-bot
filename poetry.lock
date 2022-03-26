@@ -337,7 +337,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9a8f6961538faf27e9aadcc74d57dc58120ef5967ddd9ab06e0f99bae78f54a2"
+content-hash = "c434a79d4c0480da1ca3d00087c143ec56945896b2635f961fc88acce06dde1c"
 
 [metadata.files]
 astroid = [
