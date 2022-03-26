@@ -1,0 +1,44 @@
+name: RunTestsAndUploadCodeCoverage
+on: [push, pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      OS: ubuntu-latest
+      PYTHON: '3.9'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup Python 3.9
+      id: setup-python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Load cached Poetry installation
+      id: cached-poetry-installation
+      uses: actions/cache@v2
+      with:
+        path: ~/.local
+        key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/run-tests-and-upload-code-cov.yml') }}
+    - name: Install Poetry
+      if: steps.cached-poetry-installation.outputs.cache-hit != 'true'
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Load cached virtual environment (venv)
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    - name: Install dependencies if cached venv does not exist
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+    - name: Run unit tests and generate coverage report XML
+      run: |
+        poetry run coverage run -m unittest && poetry run coverage xml
+    - name: Upload coverage report to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: true
