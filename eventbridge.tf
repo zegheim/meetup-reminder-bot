@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "reminder_schedule" {
   name                = "${var.project_name}-reminder-schedule"
   description         = "Determines when to send reminders"
-  schedule_expression = var.eventbridge_schedule_expression
+  schedule_expression = var.reminder_frequency
 }
 
 resource "aws_cloudwatch_event_target" "attach_reminder_schedule_to_lambda" {
