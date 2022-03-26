@@ -14,7 +14,6 @@ aws-lambda-typing = "^2.10.0"
 [tool.poetry.group.dev.dependencies]
 black = "^22.1.0"
 pylint = "^2.12.2"
-pytest = "^7.1.1"
 mypy = "^0.941"
 types-pytz = "^2021.3.6"
 
