@@ -20,9 +20,7 @@ aws_region  = "eu-west-2"
 # AWS Lambda
 #--------------------------------------------------------------
 
-lambda_handler = "src.handler.lambda_handler"
-lambda_name    = "MeetupReminderBot"
-lambda_runtime = "python3.9"
+lambda_name = "MeetupReminderBot"
 
 #--------------------------------------------------------------
 # AWS EventBridge
