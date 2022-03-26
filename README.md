@@ -39,7 +39,7 @@ The defaults provided by the checked-in version of `terraform.tfvars` will remin
 | `meetup_event_num_days_lookahead` | Number of days you want to be reminded of events in advance. This is useful for popular groups / events that pretty much sells out within the first couple of hours of registrations being open. Set this number to the number of days between the event being open for registration and the actual event date.                                                                                             |
 | `meetup_event_tz`                 | Meetup event timezone (e.g. Europe/London). Supports all timezones returned by `pytz.all_timezones`. Used as a workaround for countries with different timezones depending on the time of the year (e.g. United Kingdom switches to BST around late March each year, and then back to GMT around late October).                                                                                             |
 
-## Repository structure
+# Repository structure
 
 * The entire `src` directory is packaged up into a `.zip` file and used as our Lambda function's source code.
 * All utility scripts (e.g. for packaging dependencies, etc.) live under the `scripts` directory.
