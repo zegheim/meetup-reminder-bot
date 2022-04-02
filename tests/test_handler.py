@@ -20,7 +20,6 @@ class TestHandler(TestCase):
         self.assertFalse(is_reminder_hour("20", "UTC"))
         self.assertTrue(is_reminder_hour("20", "Asia/Jakarta"))
 
-    @patch("src.handler.MeetupReminderBot", return_value=MagicMock())
     @patch.dict(
         os.environ,
         {
@@ -32,7 +31,9 @@ class TestHandler(TestCase):
             "MEETUP_EVENT_TZ": "Foo/Bar",
         },
     )
-    def test_lambda_handler(self, mock_bot: MagicMock, *args):
+    @patch("src.handler.date", return_value=MagicMock())
+    @patch("src.handler.MeetupReminderBot", return_value=MagicMock())
+    def test_lambda_handler(self, mock_bot: MagicMock, mock_date: MagicMock):
         with patch("src.handler.is_reminder_hour", return_value=False):
             self.assertEqual(
                 lambda_handler(MagicMock(), MagicMock())["message"],
@@ -42,6 +43,7 @@ class TestHandler(TestCase):
         with patch(
             "src.handler.is_reminder_hour", return_value=True
         ) as mock_is_reminder_hour:
+            mock_date.today.return_value = date(2022, 3, 26)
             lambda_handler(MagicMock(), MagicMock())
             mock_is_reminder_hour.assert_called_once_with("14", "Foo/Bar")
             mock_bot.assert_called_once_with("1234567890:foobar", "12345678")
