@@ -16,7 +16,7 @@ resource "aws_iam_role" "lambda_exec_role" {
 
 resource "aws_iam_role_policy_attachment" "lambda_logging_to_cloudwatch" {
   role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = aws_iam_policy.cloudwatch_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_lambda_function" "meetup_reminder_bot" {
@@ -28,9 +28,9 @@ resource "aws_lambda_function" "meetup_reminder_bot" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   role             = aws_iam_role.lambda_exec_role.arn
   layers           = [aws_lambda_layer_version.meetup_reminder_bot.arn]
+
   depends_on = [
-    aws_iam_role_policy_attachment.lambda_logging_to_cloudwatch,
-    aws_cloudwatch_log_group.lambda_log_group
+    aws_iam_role_policy_attachment.lambda_logging_to_cloudwatch
   ]
 
   environment {
