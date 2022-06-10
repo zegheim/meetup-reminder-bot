@@ -19,7 +19,14 @@ class TestParser(TestCase):
         description = "foo bar baz \n https://www.meetup.com/FooBarBaz/events/1234567890 foobar \n foobaz"
         self.assertEqual(
             get_event_url(self.group_name, description),
-            "https://www.meetup.com/FooBarBaz/events/1234567890",
+            "https://www.meetup.com/foobarbaz/events/1234567890",
+        )
+
+    def test_get_event_url_description_contains_url_case_insensitive(self):
+        description = "foo bar baz \n https://www.meetup.com/foobarbaz/events/1234567890 foobar \n foobaz"
+        self.assertEqual(
+            get_event_url(self.group_name, description),
+            "https://www.meetup.com/foobarbaz/events/1234567890",
         )
 
     def test_get_event_url_description_contains_no_url(self):

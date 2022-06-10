@@ -42,11 +42,13 @@ def get_event_url(group_name: str, description: str) -> str:
     NoEventURLFoundException
         Raised if no event URL can be found from the given event description
     """
-    match = re.search(rf"https://www.meetup.com/{group_name}/events/\d+", description)
+    match = re.search(
+        rf"https://www.meetup.com/{group_name.lower()}/events/\d+", description.lower()
+    )
 
     if not match:
         raise NoEventURLFoundException(
-            f"Could not find event url from description: {description}"
+            f"Could not find event url from description: {description.lower()}"
         )
 
     return match.group(0)
