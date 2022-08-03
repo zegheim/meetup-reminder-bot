@@ -26,4 +26,4 @@ lambda_name = "MeetupReminderBot"
 # AWS EventBridge
 #--------------------------------------------------------------
 
-reminder_frequency = "cron(58, 17,18 ? * MON,THU *)"
+reminder_frequency = "cron(57, 17,18 ? * MON,WED,THU *)"
