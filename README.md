@@ -30,7 +30,7 @@ These three variables would have to be filled in each time you run `terraform pl
 
 ## Changing the reminder frequency
 
-The defaults provided by the checked-in version of `terraform.tfvars` will remind you of events 7 days in advance, every Monday and Thursday at 7PM UK time. The following configuration variables determine the frequency at which reminders are sent:
+The defaults provided by the checked-in version of `terraform.tfvars` will remind you of events 7 days in advance, every Monday, Wednesday, and Thursday at 18:57 UK time. The following configuration variables determine the frequency at which reminders are sent:
 
 | Variable                          | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
