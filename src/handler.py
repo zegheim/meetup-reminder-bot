@@ -52,7 +52,9 @@ def lambda_handler(event: events.EventBridgeEvent, context_: context.Context):
 
     bot = MeetupReminderBot(os.environ["TG_BOT_TOKEN"], os.environ["TG_CHAT_ID"])
     message = bot.send_reminder(
-        os.environ["MEETUP_GROUP_NAME"], event_date, os.environ["MEETUP_EVENT_REGEX"]
+        os.environ["MEETUP_GROUP_NAME"],
+        event_date,
+        event_regex=os.environ["MEETUP_EVENT_REGEX"],
     )
 
     return {"message": message.text}
