@@ -39,8 +39,10 @@ resource "aws_lambda_function" "meetup_reminder_bot" {
       TG_CHAT_ID                      = var.tg_chat_id
       MEETUP_EVENT_HOUR_24H           = var.meetup_event_hour_24h
       MEETUP_EVENT_NUM_DAYS_LOOKAHEAD = var.meetup_event_num_days_lookahead
+      MEETUP_EVENT_REGEX              = var.meetup_event_regex
       MEETUP_EVENT_TZ                 = var.meetup_event_tz
       MEETUP_GROUP_NAME               = var.meetup_group_name
+      DEBUG_MODE                      = var.debug_mode ? "1" : ""
     }
   }
 }

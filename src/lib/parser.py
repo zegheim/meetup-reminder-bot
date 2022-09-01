@@ -54,8 +54,10 @@ def get_event_url(group_name: str, description: str) -> str:
     return match.group(0)
 
 
-def get_event(group_name: str, event_date: date) -> MeetupEvent:
-    """Retrieves the first event for `group_name` happening on `event_date`.
+def get_event(
+    group_name: str, event_date: date, event_regex: str = ".*"
+) -> MeetupEvent:
+    """Retrieves the first event matching `event_regex` for `group_name` happening on `event_date`.
 
     Parameters
     ----------
@@ -63,16 +65,19 @@ def get_event(group_name: str, event_date: date) -> MeetupEvent:
         Meetup group name to look for events in
     event_date : date
         Date to look for events in
+    event_regex : str, optional
+        Regular expression to optionally filter events by
+        Defaults to ".*" (matches all events)
 
     Returns
     -------
     meetup_event : MeetupEvent
-        The first event organised by `group_name`, hosted on `event_date`
+        The first event matching `event_regex` organised by `group_name`, hosted on `event_date`
 
     Raises
     ------
     NoEventFoundException
-        Raised if no event is organised by `group_name` on `event_date`
+        Raised if no event matching `event_regex` is organised by `group_name` on `event_date`
     """
     events: list[Event] = icalevents(
         url=f"https://www.meetup.com/{group_name}/events/ical/",
@@ -81,9 +86,13 @@ def get_event(group_name: str, event_date: date) -> MeetupEvent:
         http=Http(),  # disable caching
     )
 
-    if not events:
-        raise NoEventFoundException(f"No event found for {group_name} on {event_date}")
+    try:
+        event = next(event for event in events if re.match(event_regex, event.summary))
+    except StopIteration:
+        raise NoEventFoundException(
+            f"No event matching {event_regex} found for {group_name} on {event_date}"
+        )
 
-    event_url = get_event_url(group_name, events[0].description)
+    event_url = get_event_url(group_name, event.description)
 
-    return MeetupEvent(events[0].summary, events[0].start, event_url)
+    return MeetupEvent(event.summary, event.start, event_url)

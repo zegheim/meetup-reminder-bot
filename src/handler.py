@@ -41,7 +41,7 @@ def lambda_handler(event: events.EventBridgeEvent, context_: context.Context):
     dict[str, str]
         Sent reminder message, or "Not reminder hour yet"
     """
-    if not is_reminder_hour(
+    if not os.environ["DEBUG_MODE"] and not is_reminder_hour(
         os.environ["MEETUP_EVENT_HOUR_24H"], os.environ["MEETUP_EVENT_TZ"]
     ):
         return {"message": "Not reminder hour yet"}
@@ -51,6 +51,8 @@ def lambda_handler(event: events.EventBridgeEvent, context_: context.Context):
     )
 
     bot = MeetupReminderBot(os.environ["TG_BOT_TOKEN"], os.environ["TG_CHAT_ID"])
-    message = bot.send_reminder(os.environ["MEETUP_GROUP_NAME"], event_date)
+    message = bot.send_reminder(
+        os.environ["MEETUP_GROUP_NAME"], event_date, os.environ["MEETUP_EVENT_REGEX"]
+    )
 
     return {"message": message.text}
