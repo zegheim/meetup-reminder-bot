@@ -28,12 +28,16 @@ class TestHandler(TestCase):
             "MEETUP_GROUP_NAME": "FooBar",
             "MEETUP_EVENT_HOUR_24H": "14",
             "MEETUP_EVENT_NUM_DAYS_LOOKAHEAD": "7",
+            "MEETUP_EVENT_REGEX": ".*",
             "MEETUP_EVENT_TZ": "Foo/Bar",
+            "DEBUG_MODE": "",
         },
     )
     @patch("src.handler.date", return_value=MagicMock())
     @patch("src.handler.MeetupReminderBot", return_value=MagicMock())
-    def test_lambda_handler(self, mock_bot: MagicMock, mock_date: MagicMock):
+    def test_lambda_handler_without_debug_mode(
+        self, mock_bot: MagicMock, mock_date: MagicMock
+    ):
         with patch("src.handler.is_reminder_hour", return_value=False):
             self.assertEqual(
                 lambda_handler(MagicMock(), MagicMock())["message"],
@@ -48,5 +52,31 @@ class TestHandler(TestCase):
             mock_is_reminder_hour.assert_called_once_with("14", "Foo/Bar")
             mock_bot.assert_called_once_with("1234567890:foobar", "12345678")
             mock_bot.return_value.send_reminder.assert_called_once_with(
-                "FooBar", date(2022, 4, 2)
+                "FooBar", date(2022, 4, 2), event_regex=".*"
+            )
+
+    @patch.dict(
+        os.environ,
+        {
+            "TG_BOT_TOKEN": "1234567890:foobar",
+            "TG_CHAT_ID": "12345678",
+            "MEETUP_GROUP_NAME": "FooBar",
+            "MEETUP_EVENT_HOUR_24H": "14",
+            "MEETUP_EVENT_NUM_DAYS_LOOKAHEAD": "7",
+            "MEETUP_EVENT_REGEX": ".*",
+            "MEETUP_EVENT_TZ": "Foo/Bar",
+            "DEBUG_MODE": "1",
+        },
+    )
+    @patch("src.handler.date", return_value=MagicMock())
+    @patch("src.handler.MeetupReminderBot", return_value=MagicMock())
+    def test_lambda_handler_with_debug_mode(
+        self, mock_bot: MagicMock, mock_date: MagicMock
+    ):
+        with patch("src.handler.is_reminder_hour", return_value=False):
+            mock_date.today.return_value = date(2022, 3, 26)
+            lambda_handler(MagicMock(), MagicMock())
+            mock_bot.assert_called_once_with("1234567890:foobar", "12345678")
+            mock_bot.return_value.send_reminder.assert_called_once_with(
+                "FooBar", date(2022, 4, 2), event_regex=".*"
             )

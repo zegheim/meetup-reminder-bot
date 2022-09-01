@@ -10,9 +10,10 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "reminder_frequency" {
-  description = "Determines the frequency at which the bot will send you reminders. See https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html for more information"
-  type        = string
+variable "debug_mode" {
+  description = "Whether or not to deploy the Lambda in debug mode"
+  type        = bool
+  default     = false
 }
 
 variable "lambda_handler" {
@@ -48,6 +49,11 @@ variable "meetup_event_num_days_lookahead" {
   type        = number
 }
 
+variable "meetup_event_regex" {
+  description = "Optional regular expression to filter Meetup event titles by"
+  type        = string
+}
+
 variable "meetup_event_tz" {
   description = "Meetup event timezone"
   type        = string
@@ -56,7 +62,6 @@ variable "meetup_event_tz" {
 variable "meetup_group_name" {
   description = "Meetup group identifier whose events you would like to be reminded of"
   type        = string
-  sensitive   = true
 }
 
 variable "project_name" {
@@ -69,6 +74,11 @@ variable "project_description" {
   description = "One sentence summary of this project. Used across the codebase as identifiers"
   type        = string
   default     = "Telegram bot to remind you to RSVP to your next Meetup session!"
+}
+
+variable "reminder_frequency" {
+  description = "Determines the frequency at which the bot will send you reminders. See https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html for more information"
+  type        = string
 }
 
 variable "tg_bot_token" {
