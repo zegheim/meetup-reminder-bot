@@ -26,6 +26,11 @@ variable "lambda_name" {
   description = "Name of the Lambda function"
   type        = string
   default     = "MeetupReminderBot"
+
+  validation {
+    condition     = length(var.lambda_name) <= 46
+    error_message = "Length of lambda name cannot exceed 46 characters (our reminder schedule has 18 characters)."
+  }
 }
 
 variable "lambda_runtime" {
