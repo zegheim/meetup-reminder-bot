@@ -22,7 +22,7 @@ aws_region  = "eu-west-2"
 # AWS Lambda
 #--------------------------------------------------------------
 
-lambda_name = "MeetupReminderBot"
+lambda_name = "MeetupReminderBot-LSBCMonWedThu7pm"
 
 #--------------------------------------------------------------
 # AWS EventBridge
