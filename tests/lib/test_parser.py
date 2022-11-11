@@ -37,25 +37,25 @@ class TestParser(TestCase):
         self.group_name = "FooBarBaz"
 
     def test_get_event_url_description_contains_url(self):
-        description = "foo bar baz \n https://www.meetup.com/FooBarBaz/events/1234567890 foobar \n foobaz"
+        description = "foo bar baz \n https://www.meetup.com/FooBarBaz/events/1234567890/ foobar \n foobaz"
         self.assertEqual(
             get_event_url(self.group_name, description),
-            "https://www.meetup.com/foobarbaz/events/1234567890",
+            "https://www.meetup.com/foobarbaz/events/1234567890/",
         )
 
     def test_get_event_url_description_contains_url_case_insensitive(self):
-        description = "foo bar baz \n https://www.meetup.com/foobarbaz/events/1234567890 foobar \n foobaz"
+        description = "foo bar baz \n https://www.meetup.com/foobarbaz/events/1234567890/ foobar \n foobaz"
         self.assertEqual(
             get_event_url(self.group_name, description),
-            "https://www.meetup.com/foobarbaz/events/1234567890",
+            "https://www.meetup.com/foobarbaz/events/1234567890/",
         )
 
     def test_get_event_url_description_contains_no_url(self):
-        description = "foo bar baz \n https://www.example.com foobar \n foobaz"
+        description = "foo bar baz \n https://www.example.com/ foobar \n foobaz"
         with self.assertRaises(NoEventURLFoundException):
             get_event_url(self.group_name, description)
 
-    @patch("src.lib.parser.get_event_url", return_value="https://www.example.com")
+    @patch("src.lib.parser.get_event_url", return_value="https://www.example.com/")
     def test_get_event_no_regex(self, mock_get_event_url: MagicMock):
         with patch("src.lib.parser.icalevents", return_value=[]):
             with self.assertRaises(NoEventFoundException):
