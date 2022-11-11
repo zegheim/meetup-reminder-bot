@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "reminder_schedule" {
-  name                = "${var.project_name}-reminder-schedule"
+  name                = "${aws_lambda_function.meetup_reminder_bot.function_name}-reminder-schedule"
   description         = "Determines when to send reminders"
   schedule_expression = var.reminder_frequency
 }
