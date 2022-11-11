@@ -70,9 +70,9 @@ class TestParser(TestCase):
             mock_get_event_url.assert_called_with(self.group_name, None)
             self.assertEqual(event.title, expected_event.summary)
             self.assertEqual(event.date, expected_event.start)
-            self.assertEqual(event.url, "https://www.example.com")
+            self.assertEqual(event.url, "https://www.example.com/")
 
-    @patch("src.lib.parser.get_event_url", return_value="https://www.example.com")
+    @patch("src.lib.parser.get_event_url", return_value="https://www.example.com/")
     def test_get_event_with_regex(self, mock_get_event_url: MagicMock):
         event_1 = create_event("Foo bar", datetime(2022, 3, 26, 1, 2, 3))
         event_2 = create_event("Foo baz", datetime(2022, 3, 26, 1, 2, 3))
@@ -88,4 +88,4 @@ class TestParser(TestCase):
             mock_get_event_url.assert_called_with(self.group_name, None)
             self.assertEqual(event.title, event_1.summary)
             self.assertEqual(event.date, event_1.start)
-            self.assertEqual(event.url, "https://www.example.com")
+            self.assertEqual(event.url, "https://www.example.com/")
