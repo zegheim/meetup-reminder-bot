@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume_role_policy_document" {
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
-  name               = "${var.project_name}-lambda-execution-role"
+  name               = "${var.lambda_name}-execution-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy_document.json
 }
 
@@ -28,6 +28,7 @@ resource "aws_lambda_function" "meetup_reminder_bot" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   role             = aws_iam_role.lambda_exec_role.arn
   layers           = [aws_lambda_layer_version.meetup_reminder_bot.arn]
+  timeout          = 120
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_logging_to_cloudwatch

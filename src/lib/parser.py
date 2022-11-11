@@ -43,7 +43,8 @@ def get_event_url(group_name: str, description: str) -> str:
         Raised if no event URL can be found from the given event description
     """
     match = re.search(
-        rf"https://www.meetup.com/{group_name.lower()}/events/\d+", description.lower()
+        rf"https://www.meetup.com/{group_name.lower()}/events/[a-z0-9]+/",
+        description.lower(),
     )
 
     if not match:
