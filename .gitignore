@@ -16,7 +16,6 @@ poetry.lock
 build/
 .terraform.lock.hcl
 terraform.tfstate*
-terraform.tfvars
 
 # VS Code
 .vscode/
