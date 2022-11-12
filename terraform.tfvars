@@ -28,4 +28,4 @@ lambda_name = "MeetupReminderBot-LEBCCoachingFri7pm"
 # AWS EventBridge
 #--------------------------------------------------------------
 
-reminder_frequency = "cron(57 16,17 ? * FRI *)"
+reminder_frequency = "cron(57 16,17 ? * SAT *)"
